@@ -260,10 +260,10 @@ pub fn try_stream_inner(input: TokenStream) -> TokenStream {
 
     quote!({
         let (mut __yield_tx, __yield_rx) = #crate_path::yielder::pair();
-        #crate_path::AsyncStream::new(__yield_rx, async move {
+        #crate_path::AsyncStream::new(__yield_rx, ::std::boxed::Box::pin(async move {
             #dummy_yield
             #(#stmts)*
-        })
+        }))
     })
     .into()
 }
